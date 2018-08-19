@@ -2,6 +2,7 @@
     "name": "kaktus/kiron",
     "description": "Php framework",
     "type": "library",
+    "license": "MIT",
     "version": "1.0.1",
     "authors": [
         {
@@ -9,7 +10,9 @@
             "email": "kiron@kaktus.fr"
         }
     ],
-    "require": {},
+    "require": {
+        "php": ">= 5.0"
+    },
     "autoload": {
         "psr-4": {
             "Kiron\\": "src/",
