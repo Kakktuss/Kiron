@@ -2,7 +2,6 @@
     "name": "minline/kiron",
     "description": "Php framework",
     "type": "library",
-    "license": "AGPL-3.0-or-later",
     "authors": [
         {
             "name": "Minline",
@@ -10,19 +9,21 @@
         }
     ],
     "require": {},
-    "psr-4": {
-        "Kiron\\": "src/",
-        "Kiron\\Cache\\": "src/Cache",
-        "Kiron\\Config\\": "src/Config",
-        "Kiron\\Cookie\\": "src/Cookie",
-        "Kiron\\Database\\": "src/Database",
-        "Kiron\\Emitter\\": "src/Emitter",
-        "Kiron\\File\\": "src/File",
-        "Kiron\\Html\\": "src/Html",
-        "Kiron\\Http\\": "src/Http",
-        "Kiron\\Language\\": "src/Language",
-        "Kiron\\Mvc\\": "src/Mvc",
-        "Kiron\\Router\\": "src/Router",
-        "Kiron\\Session\\": "src/Session"
+    "autoload": {
+        "psr-4": {
+            "Kiron\\": "src/",
+            "Kiron\\Cache\\": "src/Cache",
+            "Kiron\\Config\\": "src/Config",
+            "Kiron\\Cookie\\": "src/Cookie",
+            "Kiron\\Database\\": "src/Database",
+            "Kiron\\Emitter\\": "src/Emitter",
+            "Kiron\\File\\": "src/File",
+            "Kiron\\Html\\": "src/Html",
+            "Kiron\\Http\\": "src/Http",
+            "Kiron\\Language\\": "src/Language",
+            "Kiron\\Mvc\\": "src/Mvc",
+            "Kiron\\Router\\": "src/Router",
+            "Kiron\\Session\\": "src/Session"
+        }
     }
 }
