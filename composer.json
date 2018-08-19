@@ -2,7 +2,7 @@
     "name": "minline/kiron",
     "description": "Php framework",
     "type": "library",
-    "license": "AGPL-V3-OR-LATER",
+    "license": "AGPL-3.0-or-later",
     "authors": [
         {
             "name": "Minline",
