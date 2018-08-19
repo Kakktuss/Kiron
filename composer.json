@@ -2,11 +2,11 @@
     "name": "kaktus/kiron",
     "description": "Php framework",
     "type": "library",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "authors": [
         {
-            "name": "Minline",
-            "email": "kiron@minline.fr"
+            "name": "Kaktus",
+            "email": "kiron@kaktus.fr"
         }
     ],
     "require": {},
