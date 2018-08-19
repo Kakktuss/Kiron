@@ -29,6 +29,6 @@
             "Kiron\\Router\\": "src/Router",
             "Kiron\\Session\\": "src/Session"
         },
-        "files": ["src/defines.php"];
+        "files": ["src/defines.php"]
     }
 }
