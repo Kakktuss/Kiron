@@ -54,6 +54,7 @@ class Router {
                     break;
                 case 'edit':
                     $this->patch($basePath.'/:'.$f->getParameters()[0]->name, [$class, 'edit']);
+                    $this->put($basePath.'/:'.$f->getParameters()[0]->name, [$class, 'edit']);
                     break;
                 case 'delete':
                     $this->delete($basePath.'/:'.$f->getParameters()[0]->name, [$class, 'delete']);

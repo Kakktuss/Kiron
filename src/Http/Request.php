@@ -41,14 +41,8 @@ class Request {
     }
     
     public static function isJson()
-    {        
-        foreach($_SERVER as $key => $value)
-        {
-                echo $key.': '.$value.'<br/>';
-            if(strpos($key, 'HTTP') !== false)
-            {
-            }
-        }
+    {
+        return strpos('application/json', $_SERVER['HTTP_ACCEPT']) !== false;
     }
     
     public static function isHtml()
