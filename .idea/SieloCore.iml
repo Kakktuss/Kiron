@@ -2,6 +2,19 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/MVC" isTestSource="false" packagePrefix="Kiron\Mvc\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Cache" isTestSource="false" packagePrefix="Kiron\Cache\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Cookie" isTestSource="false" packagePrefix="Kiron\Cookie\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Http" isTestSource="false" packagePrefix="Kiron\Http\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Config" isTestSource="false" packagePrefix="Kiron\Config\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Language" isTestSource="false" packagePrefix="Kiron\Language\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Html" isTestSource="false" packagePrefix="Kiron\Html\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Router" isTestSource="false" packagePrefix="Kiron\Router\" />
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="Kiron\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Session" isTestSource="false" packagePrefix="Kiron\Session\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Database" isTestSource="false" packagePrefix="Kiron\Database\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Emitter" isTestSource="false" packagePrefix="Kiron\Emitter\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/File" isTestSource="false" packagePrefix="Kiron\File\" />
       <excludeFolder url="C:\xampp\htdocs\SieloCore\composer" />
     </content>
     <orderEntry type="inheritedJdk" />

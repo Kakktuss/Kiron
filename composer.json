@@ -2,6 +2,7 @@
     "name": "kaktus/kiron",
     "description": "Php framework",
     "type": "library",
+    "version": "1.0.0",
     "authors": [
         {
             "name": "Minline",

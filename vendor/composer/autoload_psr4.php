@@ -6,4 +6,17 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Kiron\\Session\\' => array($baseDir . '/src/Session'),
+    'Kiron\\Router\\' => array($baseDir . '/src/Router'),
+    'Kiron\\Mvc\\' => array($baseDir . '/src/Mvc'),
+    'Kiron\\Language\\' => array($baseDir . '/src/Language'),
+    'Kiron\\Http\\' => array($baseDir . '/src/Http'),
+    'Kiron\\Html\\' => array($baseDir . '/src/Html'),
+    'Kiron\\File\\' => array($baseDir . '/src/File'),
+    'Kiron\\Emitter\\' => array($baseDir . '/src/Emitter'),
+    'Kiron\\Database\\' => array($baseDir . '/src/Database'),
+    'Kiron\\Cookie\\' => array($baseDir . '/src/Cookie'),
+    'Kiron\\Config\\' => array($baseDir . '/src/Config'),
+    'Kiron\\Cache\\' => array($baseDir . '/src/Cache'),
+    'Kiron\\' => array($baseDir . '/src'),
 );
