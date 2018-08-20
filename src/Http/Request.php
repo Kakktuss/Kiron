@@ -29,6 +29,31 @@ class Request {
     {
         return self::getRequestMethod() === 'PATCH' || self::getRequestMethod() === 'PUT';
     }
+
+    public static function getHost()
+    {
+        return $_SERVER['HTTP_HOST'];
+    }
+
+    public static function getConnection()
+    {
+        return $_SERVER['HTTP_CONNECTION'];
+    }
+
+    public static function getOrigin()
+    {
+        return $_SERVER['HTTP_ORIGIN'];
+    }
+
+    public static function getAccept()
+    {
+        return $_SERVER['HTTP_ACCEPT'];
+    }
+
+    public static function getHeaderKey($keyName)
+    {
+        return (isset($_SERVER['HTTP_'.$keyName])) ? $_SERVER['HTTP_'.$keyName] : false;
+    }
     
     public static function getLanguage()
     {
