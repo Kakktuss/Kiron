@@ -13,12 +13,29 @@ use Kiron\Http\Exception\Router as RouterException;
 class Route
 {
 
-	private $path;
-	private $callable;
-	private $matches = [];
-	private $params = [];
+    /**
+     * @var string
+     */
+    private $path;
+    /**
+     * @var
+     */
+    private $callable;
+    /**
+     * @var array
+     */
+    private $matches = [];
+    /**
+     * @var array
+     */
+    private $params = [];
 
-	public function __construct($path, $callable)
+    /**
+     * Route constructor.
+     * @param $path
+     * @param $callable
+     */
+    public function __construct($path, $callable)
 	{
 
 		$this->path = trim($path, '/');
@@ -26,7 +43,11 @@ class Route
 
 	}
 
-	public function match($url){
+    /**
+     * @param $url
+     * @return bool
+     */
+    public function match($url){
 		$url = trim($url, '/');
 		$path = preg_replace_callback('#:([\w]+)#', [$this, 'paramMatch'], $this->path);
 		$regex = "#^$path$#i";
@@ -38,14 +59,21 @@ class Route
 		return true;
 	}
 
-	private function paramMatch($match){
+    /**
+     * @param $match
+     * @return string
+     */
+    private function paramMatch($match){
 		if(isset($this->params[$match[1]])){
 			return '(' . $this->params[$match[1]] . ')';
 		}
 		return '([^/]+)';
 	}
 
-	public function call(){
+    /**
+     * @return mixed
+     */
+    public function call(){
 		if(is_string($this->callable)){
 			$params = explode('#', $this->callable);
 			$controller = "App\\ControllerInterface\\" . $params[0] . "ControllerInterface";
@@ -56,12 +84,21 @@ class Route
 		}
 	}
 
-	public function with($param, $regex){
+    /**
+     * @param $param
+     * @param $regex
+     * @return $this
+     */
+    public function with($param, $regex){
 		$this->params[$param] = str_replace('(', '(?:', $regex);
 		return $this;
 	}
 
-	public function getUrl($params){
+    /**
+     * @param $params
+     * @return mixed|string
+     */
+    public function getUrl($params){
 		$path = $this->path;
 		foreach($params as $k => $v){
 			$path = str_replace(":$k", $v, $path);
