@@ -12,14 +12,23 @@ use Kiron\Database\QueryBuilder;
 
 abstract class Model
 {
-	protected $db;
+    /**
+     * @var QueryBuilder
+     */
+    protected $db;
 
-	public function __construct()
+    /**
+     * Model constructor.
+     */
+    public function __construct()
 	{
 		$this->db = $this->getDb();
 	}
 
-	public function getDb()
+    /**
+     * @return QueryBuilder
+     */
+    public function getDb()
 	{
 		return new QueryBuilder();
 	}
