@@ -8,6 +8,10 @@
 
 namespace Kiron\Http\Exception;
 
+/**
+ * Class Router
+ * @package Kiron\Http\Exception
+ */
 class Router extends \Exception
 {
 }
