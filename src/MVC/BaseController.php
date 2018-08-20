@@ -70,7 +70,10 @@ abstract class BaseController
 		$this->emitter = Emitter::getInstance();
 	}
 
-	public function loadModel($modelName)
+    /**
+     * @param $modelName
+     */
+    public function loadModel($modelName)
     {
         $this->$modelName = $this->getModel($modelName, $this->type);
     }
