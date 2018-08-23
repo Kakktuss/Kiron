@@ -9,6 +9,7 @@
 namespace Kiron\Config;
 
 use Kiron\File\IniFile;
+use Kiron\Http\Request;
 
 class Config
 {
@@ -84,15 +85,17 @@ class Config
         return intval($this->configFile->getKey('COOKIE_EXPIRATION_TIME'));
     }
 
-    public function setPathInformations($site, $framework)
+    public function setPathInformations($root, $site, $framework, $view, $lang)
     {
-        $this->configFile->alterKey('SITE_BASE_PATH', $site);
+        $this->configFile->alterKey('ROOT', $root);
         $this->configFile->alterKey( 'APPLICATION_PATH', $site);
         $this->configFile->alterKey('FRAMEWORK_BASE_PATH', $framework);
+        $this->configFile->alterKey('VIEW_PATH', $view);
+        $this->configFile->alterKey('LANG_PATH', $lang);
     }
 
     public function getPathInformations()
     {
-        return ['FrameworkPath' => $this->configFile->getKey('FRAMEWORK_PATH'), 'ApplicationPath' => $this->configFile->getKey('APPLICATION_PATH'), 'SitePath' => $this->configFile->getKey('SITE_PATH')];
+        return ['FrameworkPath' => $this->configFile->getKey('FRAMEWORK_PATH'), 'ApplicationPath' => $this->configFile->getKey('APPLICATION_PATH'), 'SitePath' => $this->configFile->getKey('SITE_PATH'), 'ViewPath' => $this->configFile->getKey('VIEW_PATH'), 'LangPath' => $this->configFile->getKey('LANG_PATH'),'ROOT' => $this->configFile->getKey('ROOT')];
     }
 }
