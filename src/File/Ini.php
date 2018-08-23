@@ -8,8 +8,7 @@
 
 namespace Kiron\File;
 
-
-class IniFile extends File
+class Ini extends File
 {
     private $keys;
 
@@ -49,7 +48,7 @@ class IniFile extends File
                 }
                 file_put_contents($this->filePath, $content);
             } else {
-                throw new FileException('[Fine: ini] => addKey: key '.$keyName.' already exists, if u want to modify it use the alterKey function');
+                throw new Exception('[Fine: ini] => addKey: key '.$keyName.' already exists, if u want to modify it use the alterKey function');
             }
         } else {
             $this->createFile();
@@ -95,7 +94,7 @@ class IniFile extends File
                     }
                     file_put_contents($this->filePath, $content);
                 } else {
-                    throw new FileException('[File: ini] => deleteKey: key '.$keyName.' don\'t exist');
+                    throw new Exception('[File: ini] => deleteKey: key '.$keyName.' don\'t exist');
                 }
             } else {
                 $this->init();
