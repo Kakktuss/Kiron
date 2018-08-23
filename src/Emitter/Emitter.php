@@ -113,7 +113,7 @@ class Emitter
 		{
 			if($listener->callback === $callback)
 			{
-				throw new EventException();
+				throw new EmitterException();
 			}
 		}
 		return false;
