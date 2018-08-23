@@ -45,6 +45,11 @@ class Request {
         return self::getRequestMethod() === 'PATCH' || self::getRequestMethod() === 'PUT';
     }
 
+    public static function getRoot()
+    {
+        return $_SERVER['DOCUMENT_ROOT'];
+    }
+
     /**
      * @return mixed
      */
@@ -59,14 +64,6 @@ class Request {
     public static function getConnection()
     {
         return $_SERVER['HTTP_CONNECTION'];
-    }
-
-    /**
-     * @return mixed
-     */
-    public static function getOrigin()
-    {
-        return $_SERVER['HTTP_ORIGIN'];
     }
 
     /**
