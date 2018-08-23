@@ -9,7 +9,7 @@
 namespace Kiron\Emitter;
 
 
-class EventException extends \Exception
+class EmitterException extends \Exception
 {
 
 }
