@@ -8,7 +8,7 @@
 
 namespace Kiron\File;
 
-class File
+abstract class File
 {
     protected $filePath;
 
