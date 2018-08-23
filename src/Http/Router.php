@@ -87,7 +87,7 @@ class Router {
      * @param null $name
      * @throws \ReflectionException
      */
-    public function rest($basePath, $class, $name = null)
+    public function resource($basePath, $class, $name = null)
     {
         $methods = get_class_methods($class);
         foreach($methods as $method)
