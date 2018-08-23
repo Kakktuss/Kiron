@@ -8,7 +8,7 @@
 
 namespace Kiron\File;
 
-class FileException extends \Exception
+class Exception extends \Exception
 {
 
 }
