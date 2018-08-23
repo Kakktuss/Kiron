@@ -8,8 +8,7 @@
 
 namespace Kiron\File;
 
-
-class OtherFile extends File
+class Other extends File
 {
     private $lines;
 
