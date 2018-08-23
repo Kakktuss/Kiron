@@ -9,7 +9,7 @@
 namespace Kiron\File;
 
 
-class XmlFile
+class Xml
 {
 
 }
