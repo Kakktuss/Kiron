@@ -28,23 +28,21 @@ abstract class Controller
     protected $config;
 
     /**
-     * @var
-     */
-    protected $basePart;
-
-    /**
      * Controller constructor.
      * @param string|null $basePart
      */
-    public function __construct(string $basePart = null)
+    public function __construct()
     {
-        $this->basePart = $basePart;
+        $this->config = Config::getInstance();
+        $class = new \ReflectionClass($this);
+        $path = dirname(dirname(strrpos($class->getFileName(), '/')));
+        echo $path;
     }
 
     /**
      * @param string|null $part
      */
-    public function setPart(string $part = null)
+    public function setCurrentPart(string $part = null)
     {
         $this->basePart = $part;
     }
@@ -55,7 +53,6 @@ abstract class Controller
     public function loadModel($modelName)
     {
         $this->$modelName = $this->getModel($modelName);
-        $this->config = Config::getInstance();
     }
 
 	/**
@@ -64,9 +61,9 @@ abstract class Controller
 	 *
 	 * @return mixed
 	 */
-	private function getModel(string $modelName, string $part = null)
+	private function getModel(string $modelName)
 	{
-        $modelPath = ($this->config->isLocalhost()) ? Request::getRoot().DS.APPLICATION_PATH.$part ?? $this->basePart.DS.'Model'.DS.$modelName : '';
+        $modelPath = ROOT.DS.APPLICATION_PATH.DS.CURRENT_PART.DS.'Model'.DS.$modelName;
 
         return new $modelPath();
 	}

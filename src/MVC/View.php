@@ -13,16 +13,15 @@ use Kiron\Lang\Language;
 
 abstract class View
 {
-
+    protected $cache;
+    
     protected $lang;
 
     protected $document;
 
     public function __construct()
     {
-
         $this->lang = new Language(substr(Request::getLanguage(), 0, 2));
-
     }
 
 }

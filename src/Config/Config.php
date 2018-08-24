@@ -8,8 +8,7 @@
 
 namespace Kiron\Config;
 
-use Kiron\File\IniFile;
-use Kiron\Http\Request;
+use Kiron\File\Ini;
 
 class Config
 {
@@ -29,7 +28,7 @@ class Config
 
     protected function __construct()
     {
-        $this->configFile = new IniFile(__DIR__.'/config.ini');
+        $this->configFile = new Ini(__DIR__.'/config.ini');
     }
 
     public function setDbInformations($db, $user, $host, $password)
@@ -43,26 +42,6 @@ class Config
     public function getDbInformations()
     {
         return ['dbName' => $this->configFile->getKey('DB_NAME'), 'dbHost' => $this->configFile->getKey('DB_HOST'), 'dbUser' => $this->configFile->getKey('DB_USER'), 'dbUserPassword' => $this->configFile->getKey('DB_USER_PASSWORD')];
-    }
-
-    public function setSiteBasePath($basePath)
-    {
-        $this->configFile->alterKey('SITE_BASE_PATH', $basePath);
-    }
-
-    public function getSiteBasePath()
-    {
-        return $this->configFile->getKey('SITE_BASE_PATH');
-    }
-
-    public function setFrameworkBasePath($basePath)
-    {
-        $this->configFile->alterKey('FRAMEWORK_BASE_PATH', $basePath);
-    }
-
-    public function getFrameworkBasePath()
-    {
-        return $this->configFile->getKey('FRAMEWORK_BASE_PATH');
     }
 
     public function setCacheExpirationTime($expirationTime)
@@ -85,17 +64,16 @@ class Config
         return intval($this->configFile->getKey('COOKIE_EXPIRATION_TIME'));
     }
 
-    public function setPathInformations($root, $site, $framework, $view, $lang)
+    public function setPathInformations($root, $app, $view, $lang)
     {
         $this->configFile->alterKey('ROOT', $root);
         $this->configFile->alterKey( 'APPLICATION_PATH', $site);
-        $this->configFile->alterKey('FRAMEWORK_BASE_PATH', $framework);
         $this->configFile->alterKey('VIEW_PATH', $view);
         $this->configFile->alterKey('LANG_PATH', $lang);
     }
 
     public function getPathInformations()
     {
-        return ['FrameworkPath' => $this->configFile->getKey('FRAMEWORK_PATH'), 'ApplicationPath' => $this->configFile->getKey('APPLICATION_PATH'), 'SitePath' => $this->configFile->getKey('SITE_PATH'), 'ViewPath' => $this->configFile->getKey('VIEW_PATH'), 'LangPath' => $this->configFile->getKey('LANG_PATH'),'ROOT' => $this->configFile->getKey('ROOT')];
+        return ['ApplicationPath' => $this->configFile->getKey('APPLICATION_PATH'), 'SitePath' => $this->configFile->getKey('SITE_PATH'), 'ViewPath' => $this->configFile->getKey('VIEW_PATH'), 'LangPath' => $this->configFile->getKey('LANG_PATH'),'ROOT' => $this->configFile->getKey('ROOT')];
     }
 }

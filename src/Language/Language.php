@@ -9,7 +9,6 @@
 namespace Kiron\Lang;
 
 use Kiron\File\Ini;
-use Kiron\Config\Config as MainConfig;
 use Kiron\Lang\Config as LangConfig;
 
 class Language
