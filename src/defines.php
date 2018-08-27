@@ -2,9 +2,16 @@
 
 $config = Kiron\Config\Config::getInstance();
 
-define('APPLICATION_PATH', $config->getPathInformations()['ApplicationPath']);
-define('CURRENT_PART', '');
-define('VIEW_PATH', $config->getPathInformations()['ROOT']);
-define('LANG_PATH', $config->getPathInformations()['ROOT']);
+/**
+ * Root & utils (DS)
+ */
 define('ROOT', $config->getPathInformations()['ROOT']);
+define('APPLICATION_PATH', $config->getPathInformations()['ApplicationPath']);
+define('LANG_PATH', $config->getPathInformations()['LANG']);
 define('DS', DIRECTORY_SEPARATOR);
+/**
+ * MVC
+ */
+define('MODEL_PATH', $config->getPathInformations()['MODEL']);
+define('CONTROLLER_PATH', $config->getPathInformations()['CONTROLLER']);
+define('VIEW_PATH', $config->getPathInformations()['VIEW']);
