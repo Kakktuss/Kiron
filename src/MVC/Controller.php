@@ -17,15 +17,38 @@ use Kiron\Html\Document;
 
 abstract class Controller
 {
-	/**
-	 * @var Model mixed
-	 */
-	protected $model;
+    /**
+     * @var Model mixed
+     */
+    protected $model;
 
     /**
      * @var Config mixed
      */
     protected $config;
+
+    /**
+     * @var string
+     */
+    protected $part;
+
+    /**
+     * @var array
+     */
+    protected $params = [
+        'params' => [],
+        'models' => []
+    ];
+
+    /**
+     * @var string
+     */
+    protected $defaultView;
+
+    /**
+     * @var \ReflectionClass
+     */
+    protected $self;
 
     /**
      * Controller constructor.
@@ -34,17 +57,48 @@ abstract class Controller
     public function __construct()
     {
         $this->config = Config::getInstance();
-        $class = new \ReflectionClass($this);
-        $path = dirname(dirname(strrpos($class->getFileName(), '/')));
-        echo $path;
+        $this->self = new \ReflectionClass($this);
+        $this->setCurrentPart();
     }
 
     /**
      * @param string|null $part
      */
-    public function setCurrentPart(string $part = null)
+    public function setPart(string $part = null)
     {
-        $this->basePart = $part;
+        $this->part = $part ?? strrpos(dirname(dirname($this->self->getFileName())), DS);
+    }
+
+    /**
+     * @param string|null $view
+     */
+    public function setDefaultView(string $view = null)
+    {
+        $this->defaultView = $view ?? ((strpos($this->self->getFileName(), 'Controller') !== false) ? substr($this->self->getFileName(), strpos($this->self->getFileName(), 'Controller')) : $this->self->getFileName());
+    }
+
+    /**
+     * @param $name
+     * @param $value
+     */
+    public function addParam($name, $value)
+    {
+        $this->params['params'][$name] = $value;
+    }
+
+
+    /**
+     * @param string|null $path
+     * @param string|null $view
+     * @param string|null $part
+     */
+    public function render()
+    {
+        echo scandir(ROOT.DS.APPLICATION_PATH.DS.$this->part.DS.VIEW_PATH);
+//        $viewPath = ROOT.DS.APPLICATION_PATH.DS.$this->part.DS.VIEW_PATH.DS.$view ?? $this->defaultView;
+//        $viewClass = new $viewPath();
+//        $viewClass->setupParams($this->params);
+//        $viewClass->render($this->params);
     }
 
     /**
@@ -52,19 +106,19 @@ abstract class Controller
      */
     public function loadModel($modelName)
     {
-        $this->$modelName = $this->getModel($modelName);
+        $this->params['models'][$modelName] = $this->getModel($modelName);
     }
 
-	/**
-	 * @param string $modelName
-	 * @param string $type
-	 *
-	 * @return mixed
-	 */
-	private function getModel(string $modelName)
-	{
-        $modelPath = ROOT.DS.APPLICATION_PATH.DS.CURRENT_PART.DS.'Model'.DS.$modelName;
+    /**
+     * @param string $modelName
+     * @param string $type
+     *
+     * @return mixed
+     */
+    private function getModel(string $modelName)
+    {
+        $modelPath = ROOT.DS.APPLICATION_PATH.DS.$this->part.DS.MODEL_PATH.DS.$modelName;
 
         return new $modelPath();
-	}
+    }
 }
