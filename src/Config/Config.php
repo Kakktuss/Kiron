@@ -64,16 +64,18 @@ class Config
         return intval($this->configFile->getKey('COOKIE_EXPIRATION_TIME'));
     }
 
-    public function setPathInformations($root, $app, $view, $lang)
+    public function setPathInformations($root, $app, $model, $controller, $view, $lang)
     {
         $this->configFile->alterKey('ROOT', $root);
-        $this->configFile->alterKey( 'APPLICATION_PATH', $site);
-        $this->configFile->alterKey('VIEW_PATH', $view);
+        $this->configFile->alterKey( 'APPLICATION_PATH', $app);
         $this->configFile->alterKey('LANG_PATH', $lang);
+        $this->configFile->alterKey('MODEL_PATH', $model);
+        $this->configFile->alterKey('CONTROLLER_PATH', $controller);
+        $this->configFile->alterKey('VIEW_PATH', $view);
     }
 
     public function getPathInformations()
     {
-        return ['ApplicationPath' => $this->configFile->getKey('APPLICATION_PATH'), 'SitePath' => $this->configFile->getKey('SITE_PATH'), 'ViewPath' => $this->configFile->getKey('VIEW_PATH'), 'LangPath' => $this->configFile->getKey('LANG_PATH'),'ROOT' => $this->configFile->getKey('ROOT')];
+        return ['ApplicationPath' => $this->configFile->getKey('APPLICATION_PATH'), 'RootPath' => $this->configFile->getKey('ROOT'), 'ControllerPath' => $this->configFile->getKey('CONTROLLER_PATH'), 'ModelPath' => $this->configFile->getKey('MODEL_PATH'), 'ViewPath' => $this->configFile->getKey('VIEW_PATH'), 'LangPath' => $this->configFile->getKey('LANG_PATH')];
     }
 }
