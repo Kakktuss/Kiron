@@ -24,4 +24,20 @@ abstract class View
         $this->lang = new Language(substr(Request::getLanguage(), 0, 2));
     }
 
+    public function setupParams(array $params)
+    {
+        foreach ($params['params'] as $key => $value)
+        {
+            $this->params->$key = $value;
+        }
+        foreach ($params['models'] as $key => $value)
+        {
+            $this->models->$key = $value;
+        }
+    }
+
+    public function render(array $params)
+    {
+
+    }
 }
