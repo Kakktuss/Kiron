@@ -58,7 +58,7 @@ abstract class Controller
     {
         $this->config = Config::getInstance();
         $this->self = new \ReflectionClass($this);
-        $this->setCurrentPart();
+        $this->setPart();
     }
 
     /**
