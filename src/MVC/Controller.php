@@ -28,6 +28,11 @@ abstract class Controller
     protected $config;
 
     /**
+     * @var Emitter
+     */
+    protected $emitter;
+
+    /**
      * @var string
      */
     protected $part;
@@ -43,7 +48,17 @@ abstract class Controller
     /**
      * @var string
      */
-    protected $defaultView;
+    protected $baseView;
+
+    /**
+     * @var string
+     */
+    protected $defaultLayout = 'default';
+
+    /**
+     * @var string
+     */
+    protected $baseTpl = 'default';
 
     /**
      * @var \ReflectionClass
@@ -57,8 +72,10 @@ abstract class Controller
     public function __construct()
     {
         $this->config = Config::getInstance();
+        $this->emitter = new Emitter();
         $this->self = new \ReflectionClass($this);
         $this->setPart();
+        $this->setBaseView();
     }
 
     /**
@@ -66,45 +83,78 @@ abstract class Controller
      */
     public function setPart(string $part = null)
     {
-        $this->part = $part ?? strrpos(dirname(dirname($this->self->getFileName())), DS);
+        $this->part = $part ?? substr(dirname(dirname($this->self->getFileName())), (strrpos(dirname(dirname($this->self->getFileName())), DS))+1, strlen(dirname(dirname($this->self->getFileName()))));
     }
 
     /**
      * @param string|null $view
      */
-    public function setDefaultView(string $view = null)
+    public function setBaseView(string $view = null)
     {
-        $this->defaultView = $view ?? ((strpos($this->self->getFileName(), 'Controller') !== false) ? substr($this->self->getFileName(), strpos($this->self->getFileName(), 'Controller')) : $this->self->getFileName());
+        $this->defaultView = $view ??
+            ((strpos($this->self->getShortName(), 'Controller') !== false)
+                ? substr($this->self->getShortName(), 0, strpos($this->self->getShortName(), 'Controller'))
+                : $this->self->getShortName());
     }
 
     /**
-     * @param $name
-     * @param $value
+     * @param string $layout
      */
-    public function addParam($name, $value)
+    public function setBaseLayout(string $layout = 'default')
+    {
+        $this->baseLayout = $layout;
+    }
+
+    /**
+     * @param string $tpl
+     */
+    public function setBaseTpl(string $tpl = 'default')
+    {
+        $this->baseTpl = $tpl;
+    }
+
+
+    /**
+     * @param string $name
+     * @param mixed $value
+     */
+    public function addParam(string $name, mixed $value)
     {
         $this->params['params'][$name] = $value;
     }
 
 
     /**
-     * @param string|null $path
      * @param string|null $view
-     * @param string|null $part
+     * @param string $layout
+     * @param string $tpl
      */
-    public function render()
+    public function render(string $layout = 'default', string $tpl = 'default', string $view = null)
     {
-        echo scandir(ROOT.DS.APPLICATION_PATH.DS.$this->part.DS.VIEW_PATH);
-//        $viewPath = ROOT.DS.APPLICATION_PATH.DS.$this->part.DS.VIEW_PATH.DS.$view ?? $this->defaultView;
-//        $viewClass = new $viewPath();
-//        $viewClass->setupParams($this->params);
-//        $viewClass->render($this->params);
+        $path = $_SERVER['DOCUMENT_ROOT'].DS.ROOT.DS.APPLICATION_PATH.DS.$this->part.DS.VIEW_PATH.DS.$this->defaultView;
+        if(is_dir($path))
+        {
+            $dir = scandir($path);
+            foreach ($dir as $file)
+            {
+                if(strpos($file, '.php'))
+                {
+                    include $path.DS.$file;
+                    $class = get_declared_classes()[count(get_declared_classes())-1];
+                    $class = new $class();
+                    $class->setupParams($this->params);
+                    $class->render($layout ?? $this->defaultLayout, $tpl ?? $this->defaultTpl);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
      * @param $modelName
      */
-    public function loadModel($modelName)
+    public function loadModel(string $modelName)
     {
         $this->params['models'][$modelName] = $this->getModel($modelName);
     }

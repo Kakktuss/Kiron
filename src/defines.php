@@ -15,3 +15,4 @@ define('DS', DIRECTORY_SEPARATOR);
 define('MODEL_PATH', $config->getPathInformations()['ModelPath']);
 define('CONTROLLER_PATH', $config->getPathInformations()['ControllerPath']);
 define('VIEW_PATH', $config->getPathInformations()['ViewPath']);
+define('DEFAULT_HTML_FILE', $config->getPathInformations()['DefaultHtmlFile']);
