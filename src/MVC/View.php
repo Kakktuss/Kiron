@@ -8,7 +8,7 @@
 
 namespace Kiron\MVC;
 
-use Kiron\Http\Request;
+use Kiron\Cache\Cache;
 use Kiron\Lang\Language;
 
 abstract class View
@@ -17,6 +17,11 @@ abstract class View
      * @var
      */
     protected $cache;
+
+    /**
+     * @var bool
+     */
+    protected $useCache = true;
 
     /**
      * @var Language
@@ -44,7 +49,8 @@ abstract class View
      */
     public function __construct()
     {
-        $this->lang = new Language(substr(Request::getLanguage(), 0, 2));
+        $this->lang = new Language(substr(\Kiron\Http\Request::getLanguage(), 0, 2));
+        $this->cache = new Cache();
         $this->self = new \ReflectionClass($this);
     }
 
@@ -54,6 +60,14 @@ abstract class View
     public function setDefaultHtml(string $name)
     {
         $this->defaultHtml = $name ?? 'default';
+    }
+
+    /**
+     * @param bool $use
+     */
+    public function useCache(bool $use = true)
+    {
+        $this->useCache = $use;
     }
 
     /**
