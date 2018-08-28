@@ -15,11 +15,9 @@ class Cache
 
 	private $cachePath;
 
-	public function __construct($type)
+	public function __construct()
 	{
-
-		$this->cachePath = 'Application/'.$type.'/Cache/';
-
+		$this->cachePath = $_SERVER['DOCUMENT_ROOT'].DS.ROOT.APPLICATION_PATH.DS;
 	}
 
 	public function add($fileName, $content)
