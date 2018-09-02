@@ -2,6 +2,9 @@
 
 $config = Kiron\Config\Config::getInstance();
 
+$GLOBALS['http'] = new Kiron\Http\Bag();
+$GLOBALS['config'] = Kiron\Config\Config::getInstance();
+
 /**
  * Root & utils (DS)
  */
