@@ -88,7 +88,7 @@ class Request {
      */
     public static function getHeaderKey($keyName)
     {
-        return (isset($_SERVER['HTTP_'.$keyName])) ? $_SERVER['HTTP_'.$keyName] : false;
+        return $_SERVER['HTTP_'.$keyName] ?? null;
     }
 
     /**
