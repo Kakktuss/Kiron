@@ -31,8 +31,9 @@ class Config
         $this->configFile = new Ini(__DIR__.'/config.ini');
     }
 
-    public function setDbInformations($db, $user, $host, $password)
+    public function setDbInformations($type, $db, $user, $host, $password)
     {
+        $this->configFile->alterKey('DB_TYPE', $type);
         $this->configFile->alterKey('DB_NAME', $db);
         $this->configFile->alterKey('DB_USER', $user);
         $this->configFile->alterKey('DB_HOST', $host);
@@ -41,7 +42,7 @@ class Config
 
     public function getDbInformations()
     {
-        return ['dbName' => $this->configFile->getKey('DB_NAME'), 'dbHost' => $this->configFile->getKey('DB_HOST'), 'dbUser' => $this->configFile->getKey('DB_USER'), 'dbUserPassword' => $this->configFile->getKey('DB_USER_PASSWORD')];
+        return ['type' => $this->configFile->getKey('DB_TYPE'), 'name' => $this->configFile->getKey('DB_NAME'), 'host' => $this->configFile->getKey('DB_HOST'), 'user' => $this->configFile->getKey('DB_USER'), 'userPassword' => $this->configFile->getKey('DB_USER_PASSWORD')];
     }
 
     public function setCacheExpirationTime($expirationTime)
