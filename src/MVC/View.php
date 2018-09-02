@@ -75,13 +75,9 @@ abstract class View
      */
     public function setupParams(array $params)
     {
-        foreach ($params['params'] as $key => $value)
+        foreach ($params as $key => $value)
         {
             $this->params->$key = $value;
-        }
-        foreach ($params['models'] as $key => $value)
-        {
-            $this->models->$key = $value;
         }
     }
 

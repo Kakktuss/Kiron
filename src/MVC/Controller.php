@@ -40,10 +40,7 @@ abstract class Controller
     /**
      * @var array
      */
-    protected $params = [
-        'params' => [],
-        'models' => []
-    ];
+    protected $params = [];
 
     /**
      * @var string
@@ -156,7 +153,7 @@ abstract class Controller
      */
     public function loadModel(string $modelName)
     {
-        $this->params['models'][$modelName] = $this->getModel($modelName);
+        $this->$modelName = $this->getModel($modelName);
     }
 
     /**
@@ -167,7 +164,7 @@ abstract class Controller
      */
     private function getModel(string $modelName)
     {
-        $modelPath = ROOT.DS.APPLICATION_PATH.DS.$this->part.DS.MODEL_PATH.DS.$modelName;
+        $modelPath = APPLICATION_PATH.DS.$this->part.DS.MODEL_PATH.DS.$modelName;
 
         return new $modelPath();
     }

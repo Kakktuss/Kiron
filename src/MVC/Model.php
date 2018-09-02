@@ -8,28 +8,29 @@
 
 namespace Kiron\Mvc;
 
-use Kiron\Database\QueryBuilder;
+use Kiron\Database\Database;
 
 abstract class Model
 {
-    /**
-     * @var QueryBuilder
-     */
-    protected $db;
+    protected $dbDriver;
+    
+    protected $dbBuilder;
 
     /**
      * Model constructor.
      */
     public function __construct()
 	{
-		$this->db = $this->getDb();
-	}
-
-    /**
-     * @return QueryBuilder
-     */
+		$this->dbDriver = Database::getInstance()->getDriver();
+    }
+    
     public function getDb()
-	{
-		return new QueryBuilder();
-	}
+    {
+        return $this->dbDriver->getDatabase();
+    }
+    
+    public function getBuilder()
+    {
+        return $this->dbDriver->getBuilder();
+    }
 }
