@@ -6,7 +6,7 @@ use Kiron\Database\Interfaces\Builder as BuilderInterface;
 
 abstract class AbstractBuilder implements BuilderInterface {
     
-    abstract protected $database;
+    protected $database;
         
     abstract public function select($table, $columns = null) : self;
     
@@ -22,7 +22,7 @@ abstract class AbstractBuilder implements BuilderInterface {
     
     abstract public function value(string $name, string $value) : self;
     
-    abstract public function values(string $names, string $values) : self;
+    abstract public function values(array $names, array $values) : self;
     
     abstract public function where($table, $equal) : self;
     

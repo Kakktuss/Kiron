@@ -13,7 +13,7 @@ abstract class Builder implements BuilderInterface {
     
     protected $parameters = [];
     
-    protected oldQuerys = [];
+    protected $oldQuery = [];
     
     private $currentQuery = '';
     
@@ -37,7 +37,7 @@ abstract class Builder implements BuilderInterface {
     
     abstract public function value(string $name, string $value) : self;
     
-    abstract public function values(string $names, string $values) : self;
+    abstract public function values(array $names, array $values) : self;
     
     abstract public function where($table, $equal) : self;
     
@@ -69,7 +69,7 @@ abstract class Builder implements BuilderInterface {
     {
         try {
             
-            $query = $this->database->execute($this->currentQuery);
+            $query = $this->database->prepare($this->currentQuery);
             $query->execute($this->parameters);
             $this->executedQuery = $query;
             
@@ -78,7 +78,6 @@ abstract class Builder implements BuilderInterface {
         {
             throw new BuilderException('[Kiron:Database => Builder\BaseBuilder: execute] Error while executing the current pdo query'."\n".'More informations from PDOException: '.$e, 500);
         }
-        return false;
     }
     
     public function loadObjectList() : array 
@@ -89,7 +88,6 @@ abstract class Builder implements BuilderInterface {
         {
             throw new BuilderException('[Kiron:Database => Builder\BaseBuilder: loadObjectList] Error while fetching the datas of current pdo query'."\n".'More informations from PDOException'.$e, 500);
         }
-        return false;
     }
     
     public function loadAssocs() : array 
@@ -100,7 +98,6 @@ abstract class Builder implements BuilderInterface {
         {
             throw new BuilderException('[Kiron:Database => Builder\BaseBuilder: loadAssocs] Error while fetching the datas of current pdo query'."\n".'More informations from PDOException'.$e, 500);
         }
-        return false;
     }
     
     public function loadColumns() : array 
@@ -111,7 +108,6 @@ abstract class Builder implements BuilderInterface {
         {
             throw new BuilderException('[Kiron:Database => Builder\BaseBuilder: loadColumns] Error while fetching the datas of current pdo query'."\n".'More informations from PDOException'.$e, 500);
         }
-        return false;
     }
     
     public function loadAssoc() : array 
@@ -122,7 +118,6 @@ abstract class Builder implements BuilderInterface {
         {
             throw new BuilderException('[Kiron:Database => Builder\BaseBuilder: loadAssoc] Error while fetching the datas of current pdo query'."\n".'More informations from PDOException'.$e, 500);
         }
-        return false;
     }
     
     public function loadObject() : \stdclass 
@@ -133,7 +128,6 @@ abstract class Builder implements BuilderInterface {
         {
             throw new BuilderException('[Kiron:Database => Builder\BaseBuilder: loadObject] Error while fetching the datas of current pdo query'."\n".'More informations from PDOException'.$e, 500);
         }
-        return false;
     }
     
     public function loadColumn() : array 
@@ -144,7 +138,6 @@ abstract class Builder implements BuilderInterface {
         {
             throw new BuilderException('[Kiron:Database => Builder\BaseBuilder: loadColumn] Error while fetching the datas of current pdo query'."\n".'More informations from PDOException'.$e, 500);
         }
-        return false;
     }
     
     private function parameterExists(string $name)

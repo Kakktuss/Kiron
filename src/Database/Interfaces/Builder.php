@@ -18,7 +18,7 @@ interface Builder {
     
     public function from(string $table);
     
-    public function value(string $name, $value);
+    public function value(string $name, string $value);
     
     public function values(array $names, array $values);
     
