@@ -20,12 +20,12 @@ class QueryBuilder
 	public function __construct()
 	{
 		$this->connectorInstance = Connector::getInstance();
-		$this->getDb();
+//		$this->getDb();
 	}
 
 	private function getDb()
 	{
-		$this->db = $this->connectorInstance->getPDO();
+		 $this->connectorInstance->getDriver();
 	}
 
 	public function select($argument)
@@ -46,7 +46,7 @@ class QueryBuilder
 
 	public function where($condition)
 	{
-		if($this->queryType === 'SELECT')
+		if($this->queryType === 'SELECT' || $this->queryType === 'UPDATE' || $this->queryType = 'DELETE')
 		{
 			$this->preparedQuery .= ' WHERE '.$condition;
 			return $this;
@@ -60,6 +60,36 @@ class QueryBuilder
 		return $this;
 	}
 
+	public function update($table)
+    {
+        $this->preparedQuery = 'UPDATE '.$table;
+        $this->queryType = 'UPDATE';
+        return $this;
+    }
+
+    public function delete($table)
+    {
+        $this->preparedQuery = 'DELETE FROM '.$table;
+        $this->queryType = 'DELETE';
+        return $this;
+    }
+
+    public function set(array $columns, array $values)
+    {
+        if($this->queryType === 'UPDATE')
+        {
+            $setStr = '';
+            foreach ($columns as $key => $col)
+            {
+                $setStr .= $col.' = '.("'".$values[$key]."'" ?? "''");
+                if(++$key !== count($columns))
+                    $setStr .= ', ';
+            }
+            $this->preparedQuery .= ' SET '.$setStr;
+            return $this;
+        }
+    }
+
 	public function column($columns)
 	{
 		if($this->queryType === 'INSERT')
@@ -72,13 +102,18 @@ class QueryBuilder
 		return null;
 	}
 
-	public function values($values)
+	public function values(array $columns, array $values)
 	{
 		if($this->queryType === 'INSERT')
 		{
-			if(is_array($values))
-				$values = implode(', ', $values);
-			$this->preparedQuery .= ' VALUES ('.$values.')';
+		    $insertStr = '';
+		    foreach ($columns as $key => $col)
+            {
+                $insertStr .= $col.' = '.("'".$values[$key]."'" ?? "''");
+                if(++$key !== count($columns))
+                    $insertStr .= ', ';
+            }
+			$this->preparedQuery .= ' VALUES ('.$insertStr.')';
 			return $this;
 		}
 		return null;
@@ -129,15 +164,30 @@ class QueryBuilder
 		return $this->queryExecuted->fetchAll(\PDO::FETCH_OBJ);
 	}
 
-	public function loadAssoc()
+	public function loadAssocs()
 	{
 		return $this->queryExecuted->fetchAll(\PDO::FETCH_ASSOC);
 	}
 
-	public function loadColumn()
+	public function loadColumns()
 	{
 		return $this->queryExecuted->fetchAll(\PDO::FETCH_COLUMN);
 	}
+
+	public function loadObject()
+    {
+        return $this->queryExecuted->fetch(\PDO::FETCH_OBJ);
+    }
+
+    public function loadAssoc()
+    {
+        return $this->queryExecuted->fetch(\PDO::FETCH_ASSOC);
+    }
+
+	public function loadColumn()
+    {
+        return $this->queryExecuted->fetch(\PDO::FETCH_COLUMN);
+    }
 
 	public function getCurrentQuery()
 	{
