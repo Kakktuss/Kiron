@@ -8,12 +8,18 @@ interface Builder {
     
     public function insert(string $table, $columns);
     
-    public function delete(string $delete);
+    public function delete(string $table, $columns);
     
-    public function update(string $update);
+    public function update(string $table);
     
-    public function join(string $join, string $table, $on);
-    
+    public function innerJoin(string $table, $firstCond, $secondCond);
+
+    public function leftJoint(string $table, $firstCond, $secondCond);
+
+    public function rightJoin(string $table, $firstCond, $secondCond);
+
+    public function fullJoin(string $table, $firstCond, $secondCond);
+
     public function set($columns, $values);
     
     public function from(string $table);
