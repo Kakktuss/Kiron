@@ -22,47 +22,57 @@ abstract class Builder implements BuilderInterface {
     public function __construct(PDO $database) {
         $this->database = $database;
     }
-    
+
     abstract public function select($table, $columns = null) : self;
-    
+
     abstract public function insert($table, $columns) : self;
-    
-    abstract public function delete($delete) : self;
-        
-    abstract public function update($update) : self;
-    
-    abstract public function join($join, $table, $on) : self;
-    
+
+    abstract public function delete($table, $columns) : self;
+
+    abstract public function update($table) : self;
+
+    abstract public function innerJoin(string $table, $firstCond, $secondCond);
+
+    abstract public function leftJoint(string $table, $firstCond, $secondCond);
+
+    abstract public function rightJoin(string $table, $firstCond, $secondCond);
+
+    abstract public function fullJoin(string $table, $firstCond, $secondCond);
+
     abstract public function from($table) : self;
-    
+
     abstract public function value(string $name, string $value) : self;
-    
+
     abstract public function values(array $names, array $values) : self;
-    
+
     abstract public function where($table, $equal) : self;
-    
-    public function appendParameter(string $name, $value) {
+
+    abstract public function set($columns, $values);
+
+    public function appendParameter(string $name, $value) : self
+    {
         if(!$this->parameterExists($name))
         {
             $this->parameters[$name] = $value;
-            return true;
+            return $this;
         }
         throw new BuilderException('[Kiron:Database => Builder\BaseBuilder: appendParameter] Error while appening a parameter, parameter \''.$name.'\' already exists', 500);
-        return false;
     }
     
-    public function appendParameters(array $names, array $values)
+    public function appendParameters(array $names, array $values) : self
     {
         if(count($names) === count($values))
         {
             foreach($names as $key => $name)
             {
-                $this->appendParamater($name, $values[$key]);
+                if(!$this->parameterExists($name))
+                    $this->parameters[$name] = $values[$key];
+                else
+                    throw new BuilderException('[Kiron:Database => Builder\BaseBuilder: appendParameters] Error while appening a parameter, parameter\''.$name.'\' already exists', 500);
             }
-        } else {
-            throw new BuilderException('[Kiron:Database => Builder\BaseBuilder: appendParameters] Error while checking the equality between $names and $values, the count of the arrays values is different', 500);
+            return $this;
         }
-        return false;
+        throw new BuilderException('[Kiron:Database => Builder\BaseBuilder: appendParameters] Error while checking the equality between $names and $values, the count of the arrays values is different', 500);
     }
     
     public function execute() : self 
