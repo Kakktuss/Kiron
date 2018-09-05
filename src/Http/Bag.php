@@ -13,15 +13,24 @@ class Bag {
     public $input;
     public $request;
     public $router;
-    
-    public function __construct()
+
+    public static $_instance;
+
+    public static function getInstance()
     {
-        $this->header = new Header();
-        $this->input = new Input();
-        $this->request = new Request();
-        $this->router = new Router();
+        if(!isset(self::$_instance))
+        {
+            self::$_instance = new Bag();
+        }
+        return self::$_instance;
     }
     
+    protected function __construct()
+    {
+        $this->header = Header::class;
+        $this->input = Input::class;
+        $this->request = Request::class;
+        $this->router = Router::getInstance();
+    }
 }
-
 ?>
