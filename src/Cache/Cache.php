@@ -17,7 +17,7 @@ class Cache
 
 	public function __construct()
 	{
-		$this->cachePath = $_SERVER['DOCUMENT_ROOT'].DS.ROOT.APPLICATION_PATH.DS;
+		$this->cachePath = $_SERVER['DOCUMENT_ROOT'].DS.ROOT.APPLICATION_PATH.DS.CACHE_PATH.DS;
 	}
 
 	public function add($fileName, $content)
@@ -32,14 +32,8 @@ class Cache
 
 	public function isExpired($fileName)
 	{
-		$expireTime = time() - Config::getInstance()->getCacheExpirationTime();
-		if (file_exists($this->cachePath.$fileName.'.html')  && filemtime($this->cachePath.$fileName.'.html') > $expireTime)
-		{
-			return false;
-		} else {
-			return true;
-		}
-	}
+        return file_exists($this->cachePath.$fileName.'.html') && filemtime($this->cachePath.$fileName.'.html') > (time() - intval(Config::getInstance()->getCacheExpirationTime()));
+    }
 
 	public function get($fileName)
 	{
