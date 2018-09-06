@@ -8,7 +8,10 @@
 
 namespace Kiron\File;
 
-abstract class File
+use Kiron\File\Interfaces\File as BaseFile;
+use Kiron\File\Exception\File as FileException;
+
+abstract class File implements BaseFile
 {
     protected $filePath;
 
@@ -19,19 +22,34 @@ abstract class File
 
     public function createFile()
     {
-        file_put_contents($this->filePath, '');
+        if(!$this->fileExists())
+        {
+            file_put_contents($this->filePath, '');
+            return true;
+        } else {
+            throw new FileException('[Kiron:File => BaseFile: createFile] File already exists');
+        }
     }
 
-    public function resetFile()
+    public function resetFileContent()
     {
-        $this->createFile();
+        if($this->fileExists())
+        {
+             file_put_contents($this->filePath, '');
+             return true;
+        } else {
+            throw new FileException('[Kiron:File => BaseFile: resetFile] File doesn\'t exists');
+        }
     }
 
     public function deleteFile()
     {
         if($this->fileExists())
         {
-            return unlink($this->filePath);
+            unlink($this->filePath);
+            return true;
+        } else {
+            throw new FileException('[Kiron:File => BaseFile: deleteFile] File doesn\'t exists');
         }
     }
 
