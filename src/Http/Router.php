@@ -20,11 +20,22 @@ class Router {
      */
     private $namedRoutes = [];
 
+    public static $_instance;
+
+    public static function getInstance()
+    {
+        if(!isset(self::$_instance))
+        {
+            self::$_instance = new Router();
+        }
+        return self::$_instance;
+    }
+
     /**
      * Router constructor.
      * @param $url
      */
-    public function __construct()
+    protected function __construct()
     {
         $this->url = $_GET['url'];
     }
