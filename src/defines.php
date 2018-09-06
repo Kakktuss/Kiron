@@ -2,7 +2,7 @@
 
 $config = Kiron\Config\Config::getInstance();
 
-$GLOBALS['http'] = new Kiron\Http\Bag();
+$GLOBALS['http'] = Kiron\Http\Bag::getInstance();
 $GLOBALS['config'] = Kiron\Config\Config::getInstance();
 
 /**
@@ -11,6 +11,7 @@ $GLOBALS['config'] = Kiron\Config\Config::getInstance();
 define('ROOT', $config->getPathInformations()['RootPath']);
 define('APPLICATION_PATH', $config->getPathInformations()['ApplicationPath']);
 define('LANG_PATH', $config->getPathInformations()['LangPath']);
+define('CACHE_PATH', $config->getPathInformations()['CachePath']);
 define('DS', DIRECTORY_SEPARATOR);
 /**
  * MVC
