@@ -23,31 +23,31 @@ abstract class Builder implements BuilderInterface {
         $this->database = $database;
     }
 
-    abstract public function select($table, $columns = null) : self;
+    abstract public function select(string $table, $columns = null);
 
-    abstract public function insert($table, $columns) : self;
+    abstract public function insert(string $table, $columns);
 
-    abstract public function delete($table, $columns) : self;
+    abstract public function delete(string $table, $columns);
 
-    abstract public function update($table) : self;
+    abstract public function update(string $table);
+
+    abstract public function value(string $name, $value);
+
+    abstract public function values(array $names, array $values);
 
     abstract public function innerJoin(string $table, $firstCond, $secondCond);
 
-    abstract public function leftJoint(string $table, $firstCond, $secondCond);
+    abstract public function leftJoin(string $table, $firstCond, $secondCond);
 
     abstract public function rightJoin(string $table, $firstCond, $secondCond);
 
     abstract public function fullJoin(string $table, $firstCond, $secondCond);
 
-    abstract public function from($table) : self;
+    abstract public function where(string $table, $equal);
 
-    abstract public function value(string $name, string $value) : self;
+    abstract public function set(string $column, $value);
 
-    abstract public function values(array $names, array $values) : self;
-
-    abstract public function where($table, $equal) : self;
-
-    abstract public function set($columns, $values);
+    abstract public function sets(array $columns, array $values);
 
     public function appendParameter(string $name, $value) : self
     {
