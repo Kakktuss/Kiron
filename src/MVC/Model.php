@@ -13,8 +13,6 @@ use Kiron\Database\Database;
 abstract class Model
 {
     protected $dbDriver;
-    
-    protected $dbBuilder;
 
     /**
      * Model constructor.
