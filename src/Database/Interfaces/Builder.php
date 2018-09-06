@@ -14,16 +14,16 @@ interface Builder {
     
     public function innerJoin(string $table, $firstCond, $secondCond);
 
-    public function leftJoint(string $table, $firstCond, $secondCond);
+    public function leftJoin(string $table, $firstCond, $secondCond);
 
     public function rightJoin(string $table, $firstCond, $secondCond);
 
     public function fullJoin(string $table, $firstCond, $secondCond);
 
-    public function set($columns, $values);
-    
-    public function from(string $table);
-    
+    public function set(string $column, $value);
+
+    public function sets(array $columns, array $values);
+
     public function value(string $name, string $value);
     
     public function values(array $names, array $values);
