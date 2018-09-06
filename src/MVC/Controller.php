@@ -12,10 +12,15 @@ use Kiron\Cache\Cache;
 use Kiron\Config\Config;
 use Kiron\Emitter\Emitter;
 use Kiron\Http\Request;
-use Kiron\Language\Lang;
 use Kiron\Html\Document;
+use Kiron\MVC\Exception\Controller as ControllerException;
+use Kiron\MVC\Interfaces\ControllerInterface;
 
-abstract class Controller
+/**
+ * Class Controller
+ * @package Kiron\Mvc
+ */
+abstract class Controller implements ControllerInterface
 {
     /**
      * @var Model mixed
@@ -115,11 +120,30 @@ abstract class Controller
      * @param string $name
      * @param mixed $value
      */
-    public function addParam(string $name, mixed $value)
+    public function addParam(string $name, $value)
     {
-        $this->params['params'][$name] = $value;
+        $this->params[$name] = $value;
     }
 
+    /**
+     * @param array $names
+     * @param array $values
+     */
+    public function addParams(array $names, array $values)
+    {
+        if(count($names) === count($values))
+        {
+            foreach ($names as $key => $name)
+            {
+                if(!$this->paramExists($name))
+                    $this->params[$name] = $values[$key];
+                else
+                    throw new ControllerException('[Kiron:Mvc => Controller\BaseController: addParams] Error while adding parameter, parameter '.$name.' already exists');
+            }
+        } else {
+            throw new ControllerException('[Kiron:Mvc => Controller\BaseController: addParams] Error while testing equality of $names && $values');
+        }
+    }
 
     /**
      * @param string|null $view
@@ -167,5 +191,13 @@ abstract class Controller
         $modelPath = APPLICATION_PATH.DS.$this->part.DS.MODEL_PATH.DS.$modelName;
 
         return new $modelPath();
+    }
+
+    /**
+     * @param $name
+     */
+    private function paramExists(string $name)
+    {
+        return isset($this->params[$name]);
     }
 }
