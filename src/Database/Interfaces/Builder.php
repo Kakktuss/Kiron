@@ -8,7 +8,7 @@ interface Builder {
     
     public function insert(string $table, $columns);
     
-    public function delete(string $table, $columns);
+    public function delete(string $table);
     
     public function update(string $table);
     
@@ -24,7 +24,7 @@ interface Builder {
 
     public function sets(array $columns, array $values);
 
-    public function value(string $name, string $value);
+    public function value(string $name, $value);
     
     public function values(array $names, array $values);
     
