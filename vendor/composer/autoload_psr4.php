@@ -18,5 +18,6 @@ return array(
     'Kiron\\Cookie\\' => array($baseDir . '/src/Cookie'),
     'Kiron\\Config\\' => array($baseDir . '/src/Config'),
     'Kiron\\Cache\\' => array($baseDir . '/src/Cache'),
+    'Kiron\\Bags\\' => array($baseDir . '/src/Bags'),
     'Kiron\\' => array($baseDir . '/src'),
 );

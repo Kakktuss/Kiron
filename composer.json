@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "php": ">= 5.0"
+        "php": ">= 7.0"
     },
     "autoload": {
         "psr-4": {
@@ -27,7 +27,8 @@
             "Kiron\\Language\\": "src/Language",
             "Kiron\\Mvc\\": "src/Mvc",
             "Kiron\\Router\\": "src/Router",
-            "Kiron\\Session\\": "src/Session"
+            "Kiron\\Session\\": "src/Session",
+            "Kiron\\Bags\\": "src/Bags"
         },
         "files": ["src/defines.php"]
     }

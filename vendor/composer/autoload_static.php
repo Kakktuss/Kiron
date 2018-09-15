@@ -25,6 +25,7 @@ class ComposerStaticInit2982c97b1c1cd8be8e5ebc420637217f
             'Kiron\\Cookie\\' => 13,
             'Kiron\\Config\\' => 13,
             'Kiron\\Cache\\' => 12,
+            'Kiron\\Bags\\' => 11,
             'Kiron\\' => 6,
         ),
     );
@@ -77,6 +78,10 @@ class ComposerStaticInit2982c97b1c1cd8be8e5ebc420637217f
         'Kiron\\Cache\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/Cache',
+        ),
+        'Kiron\\Bags\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Bags',
         ),
         'Kiron\\' => 
         array (
