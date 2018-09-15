@@ -42,7 +42,7 @@ class Listener
 	 * @param callable $callback
 	 * @param int      $priority
 	 */
-	public function __construct(callable $callback, int $priority)
+	public function __construct(callable $callback, int $priority = 0)
 	{
 		$this->callback = $callback;
 		$this->priority = $priority;
