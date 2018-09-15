@@ -15,7 +15,7 @@ abstract class Builder implements BuilderInterface {
     
     protected $oldQuery = [];
     
-    private $currentQuery = '';
+    protected $currentQuery = '';
     
     private $executedQuery;
     
@@ -27,7 +27,7 @@ abstract class Builder implements BuilderInterface {
 
     abstract public function insert(string $table, $columns);
 
-    abstract public function delete(string $table, $columns);
+    abstract public function delete(string $table);
 
     abstract public function update(string $table);
 
@@ -74,8 +74,8 @@ abstract class Builder implements BuilderInterface {
         }
         throw new BuilderException('[Kiron:Database => Builder\BaseBuilder: appendParameters] Error while checking the equality between $names and $values, the count of the arrays values is different', 500);
     }
-    
-    public function execute() : self 
+
+    public function execute()
     {
         try {
             
@@ -139,8 +139,8 @@ abstract class Builder implements BuilderInterface {
             throw new BuilderException('[Kiron:Database => Builder\BaseBuilder: loadObject] Error while fetching the datas of current pdo query'."\n".'More informations from PDOException'.$e, 500);
         }
     }
-    
-    public function loadColumn() : array 
+
+    public function loadColumn()
     {
         try {
             return $this->executedQuery->fetch(\PDO::FETCH_COLUMN);
@@ -149,12 +149,17 @@ abstract class Builder implements BuilderInterface {
             throw new BuilderException('[Kiron:Database => Builder\BaseBuilder: loadColumn] Error while fetching the datas of current pdo query'."\n".'More informations from PDOException'.$e, 500);
         }
     }
-    
+
+    public function getQuery()
+    {
+        return $this->currentQuery;
+    }
+
     private function parameterExists(string $name)
     {
         return isset($this->parameters[$name]);
     }
-    
+
 }
 
 ?>
