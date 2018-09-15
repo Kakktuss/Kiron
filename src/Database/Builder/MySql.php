@@ -9,22 +9,24 @@ class MySql extends BaseBuilder {
 
     protected $querys = [];
 
-    protected $currentQuery = '';
-
     protected $executedQuery = '';
 
     public function select(string $table, $columns = null): self
     {
-        $this->currentQuery .= 'SELECT (';
+        $this->currentQuery .= 'SELECT ';
         if(is_array($columns))
+        {
+            $this->currentQuery .= '(';
             foreach ($columns as $key => $column) {
                 $this->currentQuery .= $column;
                 if(++$key !== count($columns))
                     $this->currentQuery .= ', ';
             }
+            $this->currentQuery .= ')';
+        }
         else
             $this->currentQuery .= $columns;
-        $this->currentQuery .= ') FROM '.$table;
+        $this->currentQuery .= ' FROM '.$table;
         return $this;
     }
 
@@ -50,9 +52,9 @@ class MySql extends BaseBuilder {
         return $this;
     }
 
-    public function delete(string $table, $columns): self
+    public function delete(string $table): self
     {
-        $this->currentQuery .= 'DELETE'.$table;
+        $this->currentQuery .= 'DELETE FROM '.$table;
         return $this;
     }
 
@@ -104,11 +106,11 @@ class MySql extends BaseBuilder {
 
     public function where(string $table, $equal): self
     {
-        $this->currentQuery .= ' WHERE '.$table.'='.(is_int($equal)) ? $equal : "'".$equal."'";
+        $this->currentQuery .= ' WHERE '.$table.' = '.((is_int($equal)) ? $equal : "'".$equal."'");
         return $this;
     }
 
-    public function set($column, $value) : self
+    public function set(string $column, $value) : self
     {
         $this->currentQuery .= ' SET '.$column.'='.(is_int($value)) ? $value : "'".$value."'";
         return $this;
