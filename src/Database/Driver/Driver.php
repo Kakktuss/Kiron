@@ -44,7 +44,6 @@ abstract class Driver implements DriverInterface {
                 throw new DriverException('[Kiron:Database => Driver\BaseDriver: getDatabase] Error while connecting to '.$this->dbType.' database'."\n".'More information from PDOException: '.$e, 500);
             }
         }
-        var_dump($this->database);
         return $this->database;
     }
     
