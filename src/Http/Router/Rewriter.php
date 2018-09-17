@@ -5,6 +5,7 @@ namespace Kiron\Http\Router;
 use Kiron\Http\Exception\Router as RouterException;
 use Kiron\Http\Header\Response as HeaderResponse;
 use Kiron\Http\Router\Path;
+use Kiron\Mvc\Controller;
 
 class Rewriter {
 
@@ -16,10 +17,6 @@ class Rewriter {
      * @var array
      */
     private $routes = [];
-    /**
-     * @var array
-     */
-    private $namedRoutes = [];
 
     public static $_instance;
 
@@ -27,7 +24,7 @@ class Rewriter {
     {
         if(!isset(self::$_instance))
         {
-            self::$_instance = new Router();
+            self::$_instance = new Rewriter();
         }
         return self::$_instance;
     }
@@ -38,7 +35,7 @@ class Rewriter {
      */
     protected function __construct()
     {
-        $this->url = $_GET['url'];
+        $this->url = $_GET['url'] ?? '';
     }
     
     public function setUrl($url)
@@ -48,64 +45,63 @@ class Rewriter {
 
     /**
      * @param $path
-     * @param $callable
-     * @param null $name
+     * @param Controller $controller
+     * @param string $funcName
      * @return Route
      */
-    public function get($path, $callable, $name = null){
-		return $this->add($path, $callable, $name, 'GET');
+    public function get($path, Controller $controller, string $funcName){
+		return $this->add($path, $controller, $funcName, 'GET');
 	}
 
     /**
      * @param $path
-     * @param $callable
-     * @param null $name
+     * @param Controller $controller
+     * @param string $funcName
      * @return Route
      */
-    public function post($path, $callable, $name = null){
-		return $this->add($path, $callable, $name, 'POST');
+    public function post($path, Controller $controller, string $funcName){
+		return $this->add($path, $controller, $funcName, 'POST');
 	}
 
     /**
      * @param $path
-     * @param $callable
-     * @param null $name
+     * @param Controller $controller
+     * @param string $funcName
      * @return Route
      */
-    public function patch($path, $callable, $name = null)
+    public function patch($path, Controller $controller, string $funcName)
     {
-        return $this->add($path, $callable, $name, 'PATCH');
+        return $this->add($path, $controller, $funcName, 'PATCH');
     }
 
     /**
      * @param $path
-     * @param $callable
-     * @param null $name
+     * @param Controller $controller
+     * @param string $funcName
      * @return Route
      */
-    public function put($path, $callable, $name = null)
+    public function put($path, Controller $controller, string $funcName)
     {
-        return $this->add($path, $callable, $name, 'PUT');
+        return $this->add($path, $controller, $funcName, 'PUT');
     }
 
     /**
      * @param $path
-     * @param $callable
-     * @param null $name
+     * @param Controller $controller
+     * @param string $funcName
      * @return Route
      */
-    public function delete($path, $callable, $name = null)
+    public function delete($path, Controller $controller, string $funcName)
     {
-        return $this->add($path, $callable, $name, 'DELETE');
+        return $this->add($path, $controller, $funcName, 'DELETE');
     }
 
     /**
      * @param $basePath
      * @param $class
-     * @param null $name
      * @throws \ReflectionException
      */
-    public function resource($basePath, $class, $name = null)
+    public function resource($basePath, $class)
     {
         $methods = get_class_methods($class);
         foreach($methods as $method)
@@ -114,20 +110,20 @@ class Rewriter {
             switch($method)
             {
                 case 'index':
-                    $this->get($basePath.'/', [$class, 'index']);
+                    $this->get($basePath.'/', $class, 'index');
                     break;
                 case 'show':
-                    $this->get($basePath.'/:'.$f->getParameters()[0]->name, [$class, 'show']);
+                    $this->get($basePath.'/:'.$f->getParameters()[0]->name, $class, 'show');
                     break;
                 case 'store':
-                    $this->post($basePath, [$class, 'store']);
+                    $this->post($basePath, $class, 'store');
                     break;
                 case 'update':
-                    $this->patch($basePath.'/:'.$f->getParameters()[0]->name, [$class, 'update']);
-                    $this->put($basePath.'/:'.$f->getParameters()[0]->name, [$class, 'update']);
+                    $this->patch($basePath.'/:'.$f->getParameters()[0]->name, $class, 'update');
+                    $this->put($basePath.'/:'.$f->getParameters()[0]->name, $class, 'update');
                     break;
                 case 'destroy':
-                    $this->delete($basePath.'/:'.$f->getParameters()[0]->name, [$class, 'destroy']);
+                    $this->delete($basePath.'/:'.$f->getParameters()[0]->name, $class, 'update');
                     break;
             }
         }
@@ -135,20 +131,13 @@ class Rewriter {
 
     /**
      * @param $path
-     * @param $callable
-     * @param $name
+     * @param $controller
      * @param $method
      * @return Route
      */
-    private function add($path, $callable, $name, $method){
-		$route = new Path($path, $callable);
-		$this->routes[$method][] = $route;
-		if(is_string($callable) && $name === null){
-			$name = $callable;
-		}
-		if($name){
-			$this->namedRoutes[$name] = $route;
-		}
+    private function add($path, Controller $controller, string $method, string $name){
+		$route = new Path($path, $controller, $method);
+		$this->routes[$name][] = $route;
 		return $route;
 	}
 
@@ -166,19 +155,6 @@ class Rewriter {
 			}
 		}
 		throw new RouterException('No matching routes');
-	}
-
-    /**
-     * @param $name
-     * @param array $params
-     * @return mixed
-     * @throws RouterException
-     */
-    public function getUrl($name, $params = []){
-		if(!isset($this->namedRoutes[$name])){
-			throw new RouterException('No route matches this name');
-		}
-		return $this->namedRoutes[$name]->getUrl($params);
 	}
 
 }

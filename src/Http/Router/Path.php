@@ -8,7 +8,9 @@
 
 namespace Kiron\Http\Router;
 
+use Kiron\Html\Renderer;
 use Kiron\Http\Exception\Router as RouterException;
+use Kiron\MVC\Interfaces\Controller;
 
 class Path
 {
@@ -17,10 +19,16 @@ class Path
      * @var string
      */
     private $path;
+
     /**
-     * @var
+     * @var Controller
      */
-    private $callable;
+    private $controller;
+
+    /**
+     * @var string
+     */
+    private $functionName;
     /**
      * @var array
      */
@@ -35,12 +43,11 @@ class Path
      * @param $path
      * @param $callable
      */
-    public function __construct($path, $callable)
+    public function __construct($path, Controller $controller, string $function)
 	{
-
 		$this->path = trim($path, '/');
-		$this->callable = $callable;
-
+		$this->controller = $controller;
+		$this->functionName = $function;
 	}
 
     /**
@@ -74,13 +81,14 @@ class Path
      * @return mixed
      */
     public function call(){
-		if(is_string($this->callable)){
-			$params = explode('#', $this->callable);
+		if(is_string($this->controller)){
+			$params = explode('#', $this->controller);
 			$controller = "App\\ControllerInterface\\" . $params[0] . "ControllerInterface";
 			$controller = new $controller();
 			return call_user_func_array([$controller, $params[1]], $this->matches);
 		} else {
-			return call_user_func_array($this->callable, $this->matches);
+		    Renderer::getInstance()->renderAs($this->controller->renderMethod);
+			return call_user_func_array([$this->controller, $this->functionName], $this->matches);
 		}
 	}
 

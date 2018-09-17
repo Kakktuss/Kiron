@@ -8,13 +8,16 @@
 
 namespace Kiron\Mvc;
 
+use Kiron\Bags\Mixed as MixedBag;
 use Kiron\Cache\Cache;
 use Kiron\Config\Config;
 use Kiron\Emitter\Emitter;
+use Kiron\Html\Renderer;
 use Kiron\Http\Request;
 use Kiron\Html\Document;
 use Kiron\MVC\Exception\Controller as ControllerException;
-use Kiron\MVC\Interfaces\ControllerInterface;
+use \Kiron\MVC\Interfaces\Controller as ControllerInterface;
+use Kiron\Utils\ServerBag;
 
 /**
  * Class Controller
@@ -38,14 +41,19 @@ abstract class Controller implements ControllerInterface
     protected $emitter;
 
     /**
+     * @var Renderer
+     */
+    protected $renderer;
+
+    /**
      * @var string
      */
     protected $part;
 
     /**
-     * @var array
+     * @var MixedBag
      */
-    protected $params = [];
+    protected $params;
 
     /**
      * @var string
@@ -63,6 +71,11 @@ abstract class Controller implements ControllerInterface
     protected $baseTpl = 'default';
 
     /**
+     * @var string
+     */
+    public $renderMethod = 'html';
+
+    /**
      * @var \ReflectionClass
      */
     protected $self;
@@ -75,9 +88,19 @@ abstract class Controller implements ControllerInterface
     {
         $this->config = Config::getInstance();
         $this->emitter = new Emitter();
+        $this->renderer = Renderer::getInstance();
+        $this->params = new MixedBag();
         $this->self = new \ReflectionClass($this);
         $this->setPart();
         $this->setBaseView();
+    }
+
+    /**
+     * @param string $rendering
+     */
+    public function renderAs(string $rendering)
+    {
+        $this->renderMethod = $rendering;
     }
 
     /**
@@ -146,33 +169,6 @@ abstract class Controller implements ControllerInterface
     }
 
     /**
-     * @param string|null $view
-     * @param string $layout
-     * @param string $tpl
-     */
-    public function render(string $layout = 'default', string $tpl = 'default', string $view = null)
-    {
-        $path = $_SERVER['DOCUMENT_ROOT'].DS.ROOT.DS.APPLICATION_PATH.DS.$this->part.DS.VIEW_PATH.DS.$this->defaultView;
-        if(is_dir($path))
-        {
-            $dir = scandir($path);
-            foreach ($dir as $file)
-            {
-                if(strpos($file, '.php'))
-                {
-                    include $path.DS.$file;
-                    $class = get_declared_classes()[count(get_declared_classes())-1];
-                    $class = new $class();
-                    $class->setupParams($this->params);
-                    $class->render($layout ?? $this->defaultLayout, $tpl ?? $this->defaultTpl);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
      * @param $modelName
      */
     public function loadModel(string $modelName)
@@ -199,5 +195,30 @@ abstract class Controller implements ControllerInterface
     private function paramExists(string $name)
     {
         return isset($this->params[$name]);
+    }
+
+    /**
+     * @param string|null $view
+     * @param string $layout
+     * @param string $tpl
+     */
+    public function render(string $view = null, array $params = null)
+    {
+        $path = ServerBag::getInstance()['root'].DS.ROOT.DS.APPLICATION_PATH.DS.$this->part.DS.VIEW_PATH.DS.($view ?? $this->defaultView).'.php';
+        if(file_exists($path))
+        {
+            ob_start();
+            !empty($this->params) ? $this->params : $params;
+            require_once $path;
+            $content = ob_get_contents();
+            ob_end_clean();
+            ob_start();
+            require_once ServerBag::getInstance()['root'].DS.ROOT.DS.APPLICATION_PATH.DS.$this->part.DS.VIEW_PATH.DS.DEFAULT_HTML_FILE.'.php';
+            $html = ob_get_contents();
+            ob_end_clean();
+
+            return $html;
+        }
+        return false;
     }
 }

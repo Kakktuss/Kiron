@@ -18,7 +18,7 @@ class Server
     {
         if(!isset(self::$_instance))
         {
-            self::$_instance = new Bag();
+            self::$_instance = new Server();
         }
         return self::$_instance;
     }

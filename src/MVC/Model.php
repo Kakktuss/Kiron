@@ -9,8 +9,9 @@
 namespace Kiron\Mvc;
 
 use Kiron\Database\Database;
+use Kiron\MVC\Interfaces\Model as ModelInterface;
 
-abstract class Model
+abstract class Model implements ModelInterface
 {
     protected $dbDriver;
 
@@ -22,7 +23,7 @@ abstract class Model
 		$this->dbDriver = Database::getInstance()->getDriver();
     }
     
-    public function getDb()
+    public function getDatabase()
     {
         return $this->dbDriver->getDatabase();
     }

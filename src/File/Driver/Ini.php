@@ -18,7 +18,7 @@ class Ini extends File
     public function __construct(string $path)
     {
         parent::__construct($path);
-        $this->init();
+        $this->keys = parse_ini_file($this->filePath);
     }
 
     public function getKey($keyName)
@@ -59,7 +59,6 @@ class Ini extends File
             $this->addKey($keyName, $value, $quoted);
             return true;
         }
-        return false;
     }
 
     public function alterKey($keyName, $value, $quoted = true)
@@ -118,10 +117,5 @@ class Ini extends File
     protected function keyExists($keyName)
     {
         return isset($this->keys[$keyName]);
-    }
-
-    protected function init()
-    {
-        $this->keys = parse_ini_file($this->filePath);
     }
 }

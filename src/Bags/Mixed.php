@@ -13,7 +13,7 @@ use Kiron\Bags\Interfaces\Parameter as ParameterInterface;
 class Mixed extends BaseBag
 {
 
-    public function set($key, $value)
+    public function set(string $key, $value)
     {
         $this->setKey($key, $value);
     }

@@ -8,9 +8,9 @@
 
 namespace Kiron\Utils;
 
-use Kiron\Bags\String as StringBag;
+use Kiron\Bags\Text as TextBag;
 
-class ServerBag extends StringBag
+class ServerBag extends TextBag
 {
     public static $_instance;
 
@@ -18,7 +18,7 @@ class ServerBag extends StringBag
     {
         if(!isset(self::$_instance))
         {
-            self::$_instance = new Bag();
+            self::$_instance = new ServerBag();
         }
         return self::$_instance;
     }

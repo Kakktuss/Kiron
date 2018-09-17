@@ -2,7 +2,7 @@
 
 $config = Kiron\Config\Config::getInstance();
 
-$GLOBALS['http'] = Kiron\Utils\Http::getInstance();
+$GLOBALS['http'] = Kiron\Utils\HttpBag::getInstance();
 $GLOBALS['config'] = Kiron\Config\Config::getInstance();
 
 /**
