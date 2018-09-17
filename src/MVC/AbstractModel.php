@@ -8,7 +8,7 @@
 
 namespace Kiron\MVC;
 
-use Kiron\MVC\Interfaces\ModelInterface;
+use Kiron\MVC\Interfaces\Model as ModelInterface;
 
 abstract  class AbstractModel implements ModelInterface
 {
