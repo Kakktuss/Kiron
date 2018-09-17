@@ -13,30 +13,28 @@ use Kiron\Bags\Interfaces\Bag;
 abstract class BaseBag implements \ArrayAccess, Bag
 {
 
-    protected $keys = [];
-
     /**
      * @return array
      */
     public function getKeys(): array
     {
-        return $this->keys;
+        return get_defined_vars();
     }
 
     public function offsetGet($offset) {
-        $this->get($offset);
+        return $this->get($offset);
     }
 
     public function offsetUnset($offset) {
-        $this->remove($offset);
+        return $this->remove($offset);
     }
 
     public function offsetSet($offset, $value) {
-        $this->set($offset, $value);
+        return $this->set($offset, $value);
     }
 
     public function offsetExists($offset) {
-        $this->exists($offset);
+        return $this->exists($offset);
     }
 
     abstract public function set(string $key, $value);
@@ -44,18 +42,18 @@ abstract class BaseBag implements \ArrayAccess, Bag
     abstract public function sets(array $keys);
 
     public function get(string $key) {
-        return ($this->exists($key)) ? $this->keys[$key] : null;
+        return ($this->exists($key)) ? $this->$key : null;
     }
 
     public function exists(string $key)
     {
-        return isset($this->keys[$key]);
+        return isset($this->$key);
     }
 
     public function remove(string $key)
     {
         if($this->exists($key)){
-            unset($this->keys[$key]);
+            unset($this->$key);
             return true;
         }
         return false;
@@ -63,7 +61,7 @@ abstract class BaseBag implements \ArrayAccess, Bag
 
     protected function setKey(string $key, $value)
     {
-        $this->keys[$key] = $value;
+        $this->$key = $value;
         return true;
     }
 
