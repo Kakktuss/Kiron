@@ -31,12 +31,12 @@ class Client
     {
         if(!isset(self::$_instance))
         {
-            self::$_instance = new Bag();
+            self::$_instance = new Client();
         }
         return self::$_instance;
     }
 
-    protected function __construct(string $url = null, string $method = METHOD_GET)
+    protected function __construct(string $url = null, string $method = Client::METHOD_GET)
     {
         $this->url = $url;
         $this->method = $method;
