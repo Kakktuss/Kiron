@@ -8,7 +8,7 @@
 
 namespace Kiron\MVC;
 
-use Kiron\MVC\Interfaces\ControllerInterface;
+use \Kiron\MVC\Interfaces\Controller as ControllerInterface;
 
 abstract class AbstractController implements ControllerInterface
 {
