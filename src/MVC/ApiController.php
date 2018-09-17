@@ -2,23 +2,25 @@
 
 namespace Kiron\Mvc;
 
-use Kiron\Http\Header;
+use Kiron\Http\Header\Seter;
+use Kiron\MVC\Interfaces\Controller as ControllerInterface;
+use Kiron\MVC\Interfaces\ApiController as ApiControllerInterface;
 
-abstract class ApiController extends Controller {
+abstract class ApiController extends Controller implements ApiControllerInterface {
 
     public function setRendering(string $rendering)
     {
         switch ($rendering)
         {
             case 'json':
-                Header::setContentType('application/json');
+                Seter::setContentType('application/json');
                 break;
             case 'text':
                 case 'html':
-                    Header::setContentType('text/html');
+                Seter::setContentType('text/html');
                     break;
             default:
-                Header::setContentType('application/json');
+                Seter::setContentType('application/json');
         }
     }
 
