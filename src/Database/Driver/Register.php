@@ -20,7 +20,7 @@ class Register {
         return self::$_instance;
     }
     
-    public function registerDriver(string $name, BaseDriver $driver)
+    public function registerDriver(string $name, $driver)
     {
         if(!$this->driverExists($name))
         {

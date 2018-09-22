@@ -23,7 +23,7 @@ class Path
     /**
      * @var Controller
      */
-    private $controller;
+    private $callable;
 
     /**
      * @var string
@@ -43,10 +43,10 @@ class Path
      * @param $path
      * @param $callable
      */
-    public function __construct($path, Controller $controller, string $function)
+    public function __construct($path, $callable, string $function = null)
 	{
 		$this->path = trim($path, '/');
-		$this->controller = $controller;
+		$this->callable = $callable;
 		$this->functionName = $function;
 	}
 
@@ -81,15 +81,11 @@ class Path
      * @return mixed
      */
     public function call(){
-		if(is_string($this->controller)){
-			$params = explode('#', $this->controller);
-			$controller = "App\\ControllerInterface\\" . $params[0] . "ControllerInterface";
-			$controller = new $controller();
-			return call_user_func_array([$controller, $params[1]], $this->matches);
-		} else {
-		    Renderer::getInstance()->renderAs($this->controller->renderMethod);
-			return call_user_func_array([$this->controller, $this->functionName], $this->matches);
-		}
+        if((is_object($this->callable) || (is_string($this->callable) && class_exists($this->callable))) && isset($this->functionName))
+            $callable = [$this->callable, $this->functionName];
+        else
+            $callable = $this->callable;
+        return call_user_func_array($callable, $this->matches);
 	}
 
     /**

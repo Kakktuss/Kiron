@@ -21,7 +21,7 @@ class Parser
     {
         if(!isset(self::$_instance))
         {
-            self::$_instance = new Config();
+            self::$_instance = new Parser();
         }
         return self::$_instance;
     }
@@ -36,9 +36,19 @@ class Parser
         return $this->file->getKey('MODEL_PATH');
     }
 
+    public function setModelPath($path)
+    {
+        $this->file->alterKey('MODEL_PATH', $path);
+    }
+
     public function getControllerPath()
     {
         return $this->file->getKey('CONTROLLER_PATH');
+    }
+
+    public function setControllerPath($path)
+    {
+        $this->file->alterKey('CONTROLLER_PATH', $path);
     }
 
     public function getViewPath()
@@ -46,9 +56,19 @@ class Parser
         return $this->file->getKey('VIEW_PATH');
     }
 
+    public function setViewPath($path)
+    {
+        $this->file->alterKey('VIEW_PATH', $path);
+    }
+
     public function getDefaultView()
     {
         return $this->file->getKey('DEFAULT_VIEW');
+    }
+
+    public function setDefaultView($view)
+    {
+        $this->file->alterKey('DEFAULT_VIEW', $view);
     }
 
 }

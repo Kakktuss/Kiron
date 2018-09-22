@@ -2,6 +2,7 @@
 
 namespace Kiron\Database\Driver;
 
+use Kiron\Database\Config\Parser;
 use \PDO;
 use Kiron\Config\Config;
 use Kiron\Database\Builder\Builder as BaseBuilder;
@@ -11,9 +12,7 @@ use Kiron\Database\Exception\Driver as DriverException;
 abstract class Driver implements DriverInterface {
     
     protected $database;
-    
-    protected $dbConfigParams;
-    
+
     private $dbType;
     
     private $host;
@@ -26,7 +25,6 @@ abstract class Driver implements DriverInterface {
     
     public function __construct(string $dbType, string $host, string $dbName, string $dbUser, string $dbUserPassword)
     {
-        $this->dbConfigParams = Config::getInstance()->getDbInformations();
         $this->dbType = $dbType;
         $this->host = $host;
         $this->dbName = $dbName;

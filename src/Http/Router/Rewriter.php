@@ -20,6 +20,9 @@ class Rewriter {
 
     public static $_instance;
 
+    /**
+     * @return Rewriter
+     */
     public static function getInstance()
     {
         if(!isset(self::$_instance))
@@ -37,7 +40,10 @@ class Rewriter {
     {
         $this->url = $_GET['url'] ?? '';
     }
-    
+
+    /**
+     * @param $url
+     */
     public function setUrl($url)
     {
         $this->url = $url;
@@ -49,29 +55,8 @@ class Rewriter {
      * @param string $funcName
      * @return Route
      */
-    public function get($path, Controller $controller, string $funcName){
-		return $this->add($path, $controller, $funcName, 'GET');
-	}
-
-    /**
-     * @param $path
-     * @param Controller $controller
-     * @param string $funcName
-     * @return Route
-     */
-    public function post($path, Controller $controller, string $funcName){
-		return $this->add($path, $controller, $funcName, 'POST');
-	}
-
-    /**
-     * @param $path
-     * @param Controller $controller
-     * @param string $funcName
-     * @return Route
-     */
-    public function patch($path, Controller $controller, string $funcName)
-    {
-        return $this->add($path, $controller, $funcName, 'PATCH');
+    public function get($path, $callable, string $funcName = null){
+        return $this->add($path, $callable, $funcName, 'GET');
     }
 
     /**
@@ -80,9 +65,19 @@ class Rewriter {
      * @param string $funcName
      * @return Route
      */
-    public function put($path, Controller $controller, string $funcName)
+    public function post($path, $callable, string $funcName = null){
+		return $this->add($path, $callable, $funcName, 'POST');
+	}
+
+    /**
+     * @param $path
+     * @param Controller $controller
+     * @param string $funcName
+     * @return Route
+     */
+    public function patch($path, $callable, string $funcName = null)
     {
-        return $this->add($path, $controller, $funcName, 'PUT');
+        return $this->add($path, $callable, $funcName, 'PATCH');
     }
 
     /**
@@ -91,9 +86,20 @@ class Rewriter {
      * @param string $funcName
      * @return Route
      */
-    public function delete($path, Controller $controller, string $funcName)
+    public function put($path, $callable, string $funcName = null)
     {
-        return $this->add($path, $controller, $funcName, 'DELETE');
+        return $this->add($path, $callable, $funcName, 'PUT');
+    }
+
+    /**
+     * @param $path
+     * @param Controller $controller
+     * @param string $funcName
+     * @return Route
+     */
+    public function delete($path, $callable, string $funcName = null)
+    {
+        return $this->add($path, $callable, $funcName, 'DELETE');
     }
 
     /**
@@ -129,14 +135,16 @@ class Rewriter {
         }
     }
 
+
     /**
-     * @param $path
-     * @param $controller
-     * @param $method
-     * @return Route
+     * @param string $path
+     * @param callable|Controller $callable
+     * @param string|null $method
+     * @param string $name
+     * @return \Kiron\Http\Router\Path
      */
-    private function add($path, Controller $controller, string $method, string $name){
-		$route = new Path($path, $controller, $method);
+    private function add($path, $callable, string $method = null, string $name){
+		$route = new Path($path, $callable, $method);
 		$this->routes[$name][] = $route;
 		return $route;
 	}

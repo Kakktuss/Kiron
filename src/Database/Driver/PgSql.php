@@ -3,6 +3,7 @@
 namespace Kiron\Database\Driver;
 
 use Kiron\Config\Config;
+use Kiron\Database\Config\Parser;
 use Kiron\Database\Driver\Driver as BaseDriver;
 use Kiron\Database\Builder\MySql as MySqlBuilder;
 
@@ -11,8 +12,9 @@ class PgSql extends BaseDriver {
     protected $builder;
     
     public function __construct()
-    {   
-        parent::__construct('mysql', Config::getInstance()->getDbInformations()['host'], Config::getInstance()->getDbInformations()['name'], Config::getInstance()->getDbInformations()['user'], Config::getInstance()->getDbInformations()['userPassword']);
+    {
+        $config = Parser::getInstance();
+        parent::__construct('mysql', $config->getDbHost(), $config->getDbName(), $config->getDbUser(), $config->getDbUserPassword());
     }
     
     public function pushBuilderToGlobal()

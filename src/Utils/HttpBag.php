@@ -8,7 +8,7 @@
 
 namespace Kiron\Utils;
 
-use Kiron\Bags\Object as ObjectBag;
+use Kiron\Bags\Obj as ObjectBag;
 use Kiron\Http\Router\Rewriter as RouterRewriter;
 use Kiron\Http\Header\Seter as HeaderSetter;
 use Kiron\Http\Header\Response as HeaderResponse;

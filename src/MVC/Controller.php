@@ -15,6 +15,7 @@ use Kiron\Emitter\Emitter;
 use Kiron\Html\Renderer;
 use Kiron\Http\Request;
 use Kiron\Html\Document;
+use Kiron\Mvc\Config\Parser;
 use Kiron\MVC\Exception\Controller as ControllerException;
 use \Kiron\MVC\Interfaces\Controller as ControllerInterface;
 use Kiron\Utils\ServerBag;
@@ -29,11 +30,6 @@ abstract class Controller implements ControllerInterface
      * @var Model mixed
      */
     protected $model;
-
-    /**
-     * @var Config mixed
-     */
-    protected $config;
 
     /**
      * @var Emitter
@@ -58,27 +54,7 @@ abstract class Controller implements ControllerInterface
     /**
      * @var string
      */
-    protected $baseView;
-
-    /**
-     * @var string
-     */
-    protected $defaultLayout = 'default';
-
-    /**
-     * @var string
-     */
-    protected $baseTpl = 'default';
-
-    /**
-     * @var string
-     */
     public $renderMethod = 'html';
-
-    /**
-     * @var \ReflectionClass
-     */
-    protected $self;
 
     /**
      * Controller constructor.
@@ -86,13 +62,10 @@ abstract class Controller implements ControllerInterface
      */
     public function __construct()
     {
-        $this->config = Config::getInstance();
         $this->emitter = new Emitter();
         $this->renderer = Renderer::getInstance();
         $this->params = new MixedBag();
-        $this->self = new \ReflectionClass($this);
         $this->setPart();
-        $this->setBaseView();
     }
 
     /**
@@ -108,36 +81,9 @@ abstract class Controller implements ControllerInterface
      */
     public function setPart(string $part = null)
     {
-        $this->part = $part ?? substr(dirname(dirname($this->self->getFileName())), (strrpos(dirname(dirname($this->self->getFileName())), DS))+1, strlen(dirname(dirname($this->self->getFileName()))));
+        $self = new \ReflectionClass($this);
+        $this->part = $part ?? substr(dirname(dirname($self->getFileName())), (strrpos(dirname(dirname($self->getFileName())), DS))+1, strlen(dirname(dirname($self->getFileName()))));
     }
-
-    /**
-     * @param string|null $view
-     */
-    public function setBaseView(string $view = null)
-    {
-        $this->defaultView = $view ??
-            ((strpos($this->self->getShortName(), 'Controller') !== false)
-                ? substr($this->self->getShortName(), 0, strpos($this->self->getShortName(), 'Controller'))
-                : $this->self->getShortName());
-    }
-
-    /**
-     * @param string $layout
-     */
-    public function setBaseLayout(string $layout = 'default')
-    {
-        $this->baseLayout = $layout;
-    }
-
-    /**
-     * @param string $tpl
-     */
-    public function setBaseTpl(string $tpl = 'default')
-    {
-        $this->baseTpl = $tpl;
-    }
-
 
     /**
      * @param string $name
@@ -173,20 +119,9 @@ abstract class Controller implements ControllerInterface
      */
     public function loadModel(string $modelName)
     {
-        $this->$modelName = $this->getModel($modelName);
-    }
-
-    /**
-     * @param string $modelName
-     * @param string $type
-     *
-     * @return mixed
-     */
-    private function getModel(string $modelName)
-    {
         $modelPath = APPLICATION_PATH.DS.$this->part.DS.MODEL_PATH.DS.$modelName;
 
-        return new $modelPath();
+        $this->$modelName = new $modelPath;
     }
 
     /**

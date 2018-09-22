@@ -16,24 +16,6 @@ interface Controller
 {
 
     /**
-     * @param string $view
-     * @return mixed
-     */
-    public function setBaseView(string $view);
-
-    /**
-     * @param string $layout
-     * @return mixed
-     */
-    public function setBaseLayout(string $layout);
-
-    /**
-     * @param string $tpl
-     * @return mixed
-     */
-    public function setBaseTpl(string $tpl);
-
-    /**
      * @param string $name
      * @param $value
      * @return mixed
